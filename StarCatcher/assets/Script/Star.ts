@@ -1,23 +1,10 @@
-// Learn TypeScript:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
-
-    @property(cc.Label)
-    label: cc.Label = null;
+export default class Star extends cc.Component {
 
     @property
-    text: string = 'hello';
+    pickRaidus: number = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -27,5 +14,22 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(this,this.getPlayerDistance()<this.pickRaidus){
+            this.onPicked();
+            return;
+        }
+    }
+
+    getPlayerDistance(){
+        let playerPos = this.getComponent("Star").game.player.getPosition();
+        let distance = this.node.position.sub(playerPos).mag();
+        return distance;
+    }
+
+    onPicked(){
+        this.getComponent("Star").game.spawnNewStar();
+        this.getComponent("Star").game.gainScore();
+        this.node.destroy();
+    }
 }
