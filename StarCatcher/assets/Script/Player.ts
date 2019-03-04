@@ -13,6 +13,8 @@ export default class Player extends cc.Component {
     maxMoveSpeed:number=0;
     @property(Number)
     accel:number=0;
+    @property(cc.AudioClip)
+    jumpAudio:cc.AudioClip=null;
 
     accLeft=false;
     accRight=false;
@@ -51,9 +53,14 @@ export default class Player extends cc.Component {
         let jumpUp = cc.moveBy(this.JumpDuration,cc.v2(0,this.JumpHeight)).easing(cc.easeCubicActionOut());
         //下降
         let jummpDown = cc.moveBy(this.JumpDuration,cc.v2(0,-this.JumpHeight)).easing(cc.easeCubicActionIn());
+        let callback = cc.callFunc(this.playSound,this);
         //猪脚不断上跳下落~
-        return cc.repeatForever(cc.sequence(jumpUp,jummpDown));
+        return cc.repeatForever(cc.sequence(jumpUp,jummpDown,callback));
 
+    }
+
+    playSound(){
+        cc.audioEngine.play(this.jumpAudio,false,1);
     }
 
     onKeyDown(event){

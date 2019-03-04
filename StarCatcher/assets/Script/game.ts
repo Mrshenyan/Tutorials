@@ -1,3 +1,4 @@
+import { fadeIn } from '../../creator';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -11,12 +12,21 @@ export default class game extends cc.Component {
     player:cc.Node=null;
     @property(cc.Label)
     Score:cc.Label=null;
+    @property(cc.AudioClip)
+    gainAudio:cc.AudioClip=null;
 
-    maxStarDuration:0;
-    minStarDuration:0;
+    @property
+    maxStarDuration:number = 0;
+    @property
+    minStarDuration:number = 0;
     groundY=0;
     Sc=0;
+    timer=0;
+    starDuration=0;
+
     onLoad () {
+        this.timer=0;
+        this.starDuration=0;
         this.groundY = this.ground.y + this.ground.height/2;
         this.spawnNewStar();
     }
@@ -25,10 +35,18 @@ export default class game extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(this.timer>this.starDuration){
+            this.gameOver();
+            return;
+        }
+        this.timer +=dt;
+    }
 
     spawnNewStar(){
         let newStar = cc.instantiate(this.starPre);
+        this.starDuration = this.minStarDuration + Math.random()*(this.maxStarDuration-this.minStarDuration);
+        this.timer=0;
         this.node.addChild(newStar);
         newStar.setPosition(this.getNewStarPosition());
         newStar.getComponent("Star").game = this;
@@ -45,6 +63,13 @@ export default class game extends cc.Component {
 
     gainScore(){
         this.Sc++;
-        this.Score.string = "Score: "+this.Sc.toString();
+        this.Score.string = "Score: ";
+        this.Score.string += this.Sc.toString();
+        cc.audioEngine.play(this.gainAudio,false,1);
+    }
+
+    gameOver(){
+        this.player.stopAllActions();
+        cc.director.loadScene("mainScene");
     }
 }

@@ -366,7 +366,10 @@
     "JumpHeight": 200,
     "JumpDuration": 0.3,
     "maxMoveSpeed": 400,
-    "accel": 350
+    "accel": 350,
+    "jumpAudio": {
+      "__uuid__": "f6f64296-f9ce-4a71-b837-886c76635f38"
+    }
   },
   {
     "__type__": "cc.Node",
@@ -384,7 +387,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "1bMIAvWbtI/akZcL8R82ZG",
+    "_id": "8eGLLdx0VDGYDgoqD012Tb",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -410,7 +413,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": -189,
       "y": 252
     },
     "_skewX": 0,
@@ -477,6 +480,11 @@
     },
     "Score": {
       "__id__": 11
-    }
+    },
+    "gainAudio": {
+      "__uuid__": "1175154b-e532-47c1-8498-2619ec32c3b5"
+    },
+    "maxStarDuration": 10,
+    "minStarDuration": 2
   }
 ]

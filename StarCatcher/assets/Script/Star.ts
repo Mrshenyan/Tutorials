@@ -1,3 +1,5 @@
+
+import game from './game';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -19,6 +21,9 @@ export default class Star extends cc.Component {
             this.onPicked();
             return;
         }
+        let opacityRatio = 1-this.game.timer/this.game.starDuration;
+        let minOpacity=50;
+        this.node.opacity = minOpacity + Math.floor(opacityRatio * (255 - minOpacity));
     }
 
     getPlayerDistance(){
