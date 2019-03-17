@@ -1,4 +1,4 @@
-import { fadeIn } from '../../creator';
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -19,6 +19,10 @@ export default class game extends cc.Component {
     maxStarDuration:number = 0;
     @property
     minStarDuration:number = 0;
+    @property(cc.Node)
+    rankNode=null;
+    @property(cc.Prefab)
+    rankRaw:cc.Prefab=null;
     groundY=0;
     Sc=0;
     timer=0;
@@ -71,5 +75,16 @@ export default class game extends cc.Component {
     gameOver(){
         this.player.stopAllActions();
         cc.director.loadScene("mainScene");
+    }
+
+    toRank(){
+        this.rankNode.active = true;
+        let content = this.rankNode.getChildByName("RankScrollView").getChildByName("view").getChildByName("content");
+        for(let i=0;i<10;i++){
+            let rankRaw = cc.instantiate(this.rankRaw);
+            content.height += rankRaw.height+1;
+            this.rankNode.getChildByName("RankScrollView").
+                getChildByName("view").getChildByName("content").addChild(rankRaw);
+        }
     }
 }
